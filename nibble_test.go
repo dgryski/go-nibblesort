@@ -3,21 +3,23 @@ package nibblesort
 import (
 	"sort"
 	"testing"
-	"testing/quick"
 )
 
 func TestSort(t *testing.T) {
 
-	f := func(x uint64) bool {
+	x := uint64(1)
+
+	for i := 0; i < 10000; i++ {
+		x = nextrng(x)
+
 		y := Sort(x)
 
 		s := suint64(x)
 		sort.Sort(&s)
 
-		return y == uint64(s)
-	}
-	if err := quick.Check(f, nil); err != nil {
-		t.Error(err)
+		if y != uint64(s) {
+			t.Errorf("failed to sort x=%x; got=%x, want %x", x, y, uint64(s))
+		}
 	}
 }
 
